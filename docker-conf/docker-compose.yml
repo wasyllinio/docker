@@ -1,0 +1,90 @@
+
+version: '2'
+
+services:
+    phpunit:
+        image: sichiro/php7-cli-phpunit-xdebug # our PHPUnit image, created or found on Docker Hub
+        volumes:
+          - /tmp/:/tmp/ # linking /tmp/ folder because PHPStorm stores its stuff there
+        networks:
+          - network_dev
+        depends_on:
+          - mysql
+        links:
+          - mysql
+    mysql:
+        build: ./mysql/
+        volumes:
+            - ../db:/var/lib/mysql
+        networks:
+            - network_dev
+        ports:
+            - '3306:3306'
+
+    redis:
+        image: redis:alpine
+        networks:
+            - network_dev
+
+    app:
+        image: php:7.0-fpm
+        volumes:
+            - ../projects:/var/www/html
+            - ../logs:/var/log/apache2/logs
+        command: "true"
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - 8080:80
+        links:
+            - mysql
+        environment:
+            PMA_HOST: mysql
+        networks:
+            - network_dev
+        volumes:
+            - ../pma/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+
+    php7:
+        build: ./php7/
+        links:
+            - mysql
+            - redis
+        volumes_from:
+            - app
+        volumes:
+            - ./php7/.ssh/:/root/.ssh/
+        networks:
+            - network_dev
+        ports:
+            - "80:80"
+            - "443:443"
+        hostname: mwasylecki
+        environment:
+            DOCKER_HOST: DOCKER_HOST
+
+    php5:
+        build: ./php5/
+        links:
+            - mysql
+            - redis
+        volumes_from:
+            - app
+        networks:
+            - network_dev
+        ports:
+            - "81:80"
+            - "444:443"
+        environment:
+            - DOCKER_HOST
+
+networks:
+    network_dev:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: '172.99.0.0/16'
+                  gateway: '172.99.0.1'
+

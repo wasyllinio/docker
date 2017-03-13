@@ -1,0 +1,5 @@
+
+[mysqld]
+character_set_server = utf8
+collation_server = utf8_polish_ci
+sql-mode=""

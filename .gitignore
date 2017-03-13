@@ -1,0 +1,11 @@
+db/*
+!db/.gitkeep
+
+projects/*
+!projects/.gitkeep
+
+logs/*
+!logs/.gitkeep
+
+docker-conf/php7/.ssh/*
+!docker-conf/php7/.ssh/.gitkeep
