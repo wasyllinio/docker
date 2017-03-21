@@ -30,6 +30,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libjpeg62-turbo-dev \
         libpng-dev \
         beanstalkd \
+        optipng \
+        jpegoptim \
         libbz2-dev \
         $BUILD_DEPS \
     && apt-mark manual \
@@ -107,12 +109,17 @@ RUN npm install -g gulp-sass
 RUN npm install node-sass
 
 COPY ./vhost-config.conf /etc/apache2/sites-available/000-default.conf
+#COPY /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf.bak
+#COPY ./ssl.conf /etc/apache2/sites-available/default-ssl.conf
 
 #RUN bundle install --gemfile=/var/www/html/cm-3clicks-api/Gemfile
 #RUN bundle install --gemfile=/var/www/html/cm-3clicks-panel/Gemfile
 
 EXPOSE 80
 EXPOSE 443
+
+#RUN a2enmod ssl
+#CMD ["/usr/bin/a2ensite", "/etc/apache2/sites-available/default-ssl.conf"]
 
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
