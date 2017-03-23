@@ -21,8 +21,14 @@ services:
         ports:
             - '3306:3306'
 
+    mongodb:
+        build: ./mongodb/
+        volumes:
+            - ../mongodb:/data/db
+        networks:
+            - network_dev
+
     redis:
-        # image: redis:alpine
         build: ./redis/
         networks:
             - network_dev
@@ -53,6 +59,7 @@ services:
         links:
             - mysql
             - redis
+            - mongodb
         volumes_from:
             - app
         volumes:
