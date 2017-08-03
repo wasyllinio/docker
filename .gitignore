@@ -1,6 +1,9 @@
 db/*
 !db/.gitkeep
 
+mongodb/*
+!mongodb/.gitkeep
+
 projects/*
 !projects/.gitkeep
 
