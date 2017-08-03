@@ -104,6 +104,7 @@ RUN echo '#!/bin/bash\n([ -f bin/console ] && php bin/console --env=prod $*) || 
 RUN chmod +x /usr/bin/prod
 
 RUN docker-php-ext-enable xdebug
+RUN docker-php-ext-enable smbclient
 #RUN echo "xdebug.remote_enable=1" > /usr/local/etc/php/conf.d/php.ini
 #RUN echo "xdebug.remote_host=$DOCKER_HOST_IP" > /usr/local/etc/php/conf.d/xdebug-host.ini
 #RUN echo "xdebug.remote_host_tmp=$DOCKER_HOST_IP" > /usr/local/etc/php/conf.d/xdebug-host.ini
